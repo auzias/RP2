@@ -1,0 +1,36 @@
+architecture half_tb of test_bench_half_adder is
+-- déclare le composant à utiliser
+component half_adder_tester is
+	port (	a, b 	: in std_logic;
+		S, Cy	: out std_logic);
+end component;
+
+signal inputs : unsigned(1 downto 0);
+signal outputs : unsigned(1 downto 0);
+
+
+    -- instanciation de composants
+    for dut : half_adder_tester use entity
+	    work.halfAdder(ha)
+	    port map(inputs(0), inputs(1), outputs(0), outputs(1));
+begin
+    dut : half_adder_tester
+    port map(inputs(0), inputs(1), outputs(0), outputs(1));
+    -- processus de test
+    process
+    VARIABLE som : natural;
+	    begin
+		    for i in 0 to 3 loop -- for séquentiel (process)
+			    inputs <= conv_std_logic_vector(i, 2);
+			    wait for 10 ns;
+
+			    som := 0;
+			    for j in inputs'range loop
+			    if inputs(j) = '1' then som := som + 1; end if;
+			    end loop;
+
+			    assert outputs = conv_std_logic_vector(som, 2);
+		    end loop;
+		    wait;
+    end process;
+end half_tb;

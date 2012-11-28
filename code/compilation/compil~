@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#COMPONENT=$(basename "$(pwd)")
+if [ $# -ne 2 ]
+then
+  echo -e "Usage: ./`basename $0` {component}
+components :
+`ls --hide=compilation ..`"
+  exit 1
+fi
+
+COMPONENT=$1
+
+echo "compilation de ../$COMPONENT/$COMPONENT-(ex|in)t.vhdl"
+ghdl -a ../"$COMPONENT/$COMPONENT"-ext.vhdl
+ghdl -a ../"$COMPONENT/$COMPONENT"-int.vhdl
+echo "compilation du test bench de $COMPONENT"
+ghdl -a ../"$COMPONENT"/testbench_"$COMPONENT"-ext.vhdl
+ghdl -a ../"$COMPONENT"/testbench_"$COMPONENT"-int.vhdl
+echo "elaboration de ../$COMPONENT/test_bench_$COMPONENT"
+ghdl -e test_bench_"$COMPONENT"
+#echo "creation de test_bench_$COMPONENT.vcd"
+#ghdl -r test_bench_"$COMPONENT" --vcd=test_bench_"$COMPONENT".vcd

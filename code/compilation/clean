@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "supprime tous les fichiers du répertoire"
+rm -f *o *cf *vcd test_*

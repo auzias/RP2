@@ -1,0 +1,14 @@
+#!/bin/sh
+
+COMPONENT=$(basename "$(pwd)")
+
+cd ..
+echo "compilation de $COMPONENT/$COMPONENT-(ex|in)t.vhdl"
+ghdl -a "$COMPONENT"/"$COMPONENT"-ext.vhdl
+ghdl -a "$COMPONENT"/"$COMPONENT"-int.vhdl
+echo "compilation de $COMPONENT//testbench_$COMPONENT-(ex|in)t.vhdl"
+ghdl -a "$COMPONENT"/testbench_"$COMPONENT"-ext.vhdl
+ghdl -a "$COMPONENT"/testbench_"$COMPONENT"-int.vhdl
+echo "$COMPONENT//testbench_$COMPONENT-(ex|in)t.vhdl"
+ghdl -e "$COMPONENT"/test_bench_"$COMPONENT"
+ghdl -r "$COMPONENT"/test_bench_"$COMPONENT" --vcd=test_bench_"$COMPONENT".vcd
